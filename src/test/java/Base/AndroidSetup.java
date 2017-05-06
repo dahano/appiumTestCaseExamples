@@ -2,20 +2,14 @@ package Base;
 
 import Pages.MainActivity;
 import Pages.SearchResultsPage;
-import io.appium.java_client.TouchAction;
+import com.thoughtworks.selenium.webdriven.commands.WaitForPageToLoad;
 import io.appium.java_client.android.AndroidDriver;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -48,9 +42,10 @@ public class AndroidSetup {
         capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("deviceName", "Android Sim");
         capabilities.setCapability("app","/Users/ofirdahan/Desktop/cargurus/cargurus.apk");
+        capabilities.setCapability("udid", "192.168.56.101:5555");
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
     @AfterClass
@@ -61,15 +56,31 @@ public class AndroidSetup {
     @Test
     public void select2SeriesBlackBMW() throws InterruptedException {
         MainActivity mainActivity = new MainActivity();
-        SearchResultsPage searchResultsPage = new SearchResultsPage();
         WebElement searchUsedCarButton = driver.findElementByAccessibilityId("Search Used Cars");
+        SearchResultsPage searchResultsPage = new SearchResultsPage();
+        WaitForPageToLoad waitForPageToLoad = new WaitForPageToLoad();
+
 
         mainActivity.setZipCode(driver, "90210");
         mainActivity.selectCarFrame(driver);
         mainActivity.selectMake(driver, "BMW");
         mainActivity.selectModel(driver, "2 Series");
         searchUsedCarButton.click();
+
         searchResultsPage.selectFilterButton(driver);
+        waitForPageToLoad.setTimeToWait(4000);
+
+        searchResultsPage.selectColorOption(driver);
+        searchResultsPage.chooseColor(driver,"Black");
+        searchResultsPage.clickDoneButton(driver);
+
+        waitForPageToLoad.setTimeToWait(4000);
+        searchResultsPage.selectYearsOption(driver);
+        searchResultsPage.selectAllYears(driver);
+        searchResultsPage.selectYearEndtoEnd(driver);
+        searchResultsPage.selectYearEndtoEnd(driver);
+        searchResultsPage.selectSearchButton(driver);
+        searchResultsPage.selectFirstRowItem(driver);
     }
 
 
