@@ -1,79 +1,115 @@
 package Pages;
 
 
-import com.thoughtworks.selenium.webdriven.commands.WaitForPageToLoad;
+import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public class SearchResultsPage {
-    WaitForPageToLoad waitForPageToLoad = new WaitForPageToLoad();
 
     public void selectFilterButton(AndroidDriver driver) throws InterruptedException {
         WebElement clickOnFilterResultsButton = driver.findElementByAccessibilityId("Filter Results");
-        waitForPageToLoad.setTimeToWait(3000);
         clickOnFilterResultsButton.click();
-        waitForPageToLoad.setTimeToWait(3000);
     }
 
-    public void selectYearsOption(AndroidDriver driver){
-        WebElement yearsOption = driver.findElement(By.xpath("//android.view.View[@index='4']"));
+    public void selectYearsOption(AndroidDriver driver) throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(driver, 6);
+        WebElement yearsOption = driver.findElementByAccessibilityId("\uE258 Years");
 
-         if(yearsOption.isEnabled()) {
-             waitForPageToLoad.setTimeToWait(3000);
-
-             yearsOption.click();
-         }
+         wait.until(ExpectedConditions.elementToBeClickable(yearsOption));
+         yearsOption.click();
     }
 
     public void selectAllYears(AndroidDriver driver) {
         WebElement allYears = driver.findElementByAccessibilityId("All Years");
-        waitForPageToLoad.setTimeToWait(5000);
         allYears.click();
     }
 
     public void selectYearEndtoEnd(AndroidDriver driver){
         WebElement year2015 = driver.findElementByAccessibilityId("2 Series");
-        waitForPageToLoad.setTimeToWait(3000);
         year2015.click();
     }
 
     public void selectSearchButton(AndroidDriver driver){
         WebElement searchButton = driver.findElementByAccessibilityId("Search");
-        waitForPageToLoad.setTimeToWait(3000);
         searchButton.click();
     }
 
     public void selectColorOption(AndroidDriver driver){
-        WebElement selectColor = driver.findElementByXPath("//android.view.View[@index='10']");
-        waitForPageToLoad.setTimeToWait(5000);
-        selectColor.click();
+        try{
+            WebElement selectColor = driver.findElementByXPath("//android.view.View[@index='10']");
+            selectColor.click();
+        }catch (NoSuchElementException nse){
+            nse.printStackTrace();
+        }
+
+
     }
 
     public void chooseColor(AndroidDriver driver, String color){
         WebElement colorOption = driver.findElementByAccessibilityId(color);
-        waitForPageToLoad.setTimeToWait(3000);
         colorOption.click();
     }
 
     public void clickDoneButton(AndroidDriver driver){
         WebElement doneButton = driver.findElementByAccessibilityId("Done");
-        waitForPageToLoad.setTimeToWait(3000);
         doneButton.click();
     }
 
-    public void clickReturnButton(AndroidDriver driver){
-        WebElement resultsButton = driver.findElement(By.xpath("//android.widget.Button[@index='0']"));
-        waitForPageToLoad.setTimeToWait(3000);
-        resultsButton.click();
-    }
 
     public void selectFirstRowItem(AndroidDriver driver){
-        WebElement firstRowListItem = driver.findElementByAccessibilityId("Featured Listing");
-        waitForPageToLoad.setTimeToWait(3000);
-        firstRowListItem.click();
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        WebElement firstRowListItemContDesc = driver.findElementByXPath("//*[1]//*[1]//*[1]//*[1]//*[1]//*[1]//*[8]");
+        WebElement firstRowList = driver.findElementByXPath("//android.widget.ListView[@index='7']");
+
+        try{
+            if(firstRowList.isDisplayed()){
+                firstRowList.click();
+            }
+        }catch (NoSuchElementException nse){
+            wait.until(ExpectedConditions.elementToBeClickable(firstRowListItemContDesc));
+            firstRowListItemContDesc.click();
+        }
+
+    }
+
+    public void selectShareLink(AndroidDriver driver){
+
+        TouchAction touchAction = new TouchAction(driver);
+        try{
+            touchAction.tap(988,1801).perform();
+        }catch (NoSuchElementException nse){
+            touchAction.tap(988,1810).perform();
+            nse.printStackTrace();
+        }
+    }
+
+    public void selectEmailShareLink(AndroidDriver driver){
+        try{
+            WebElement emailLink = driver.findElementByAccessibilityId("✉ Email");
+            emailLink.click();
+        }catch (NoSuchElementException nse){
+            nse.printStackTrace();
+            WebElement emailXPath = driver.findElement(By.xpath("//android.view.View[@index='7'"));
+            emailXPath.click();
+        }
+
+    }
+
+    public void sendEmailShareLinkTo(AndroidDriver driver, String emailAdress){
+            WebElement emailBodyXpath = driver.findElementByXPath("//android.widget.EditText[@index='1']");
+            emailBodyXpath.sendKeys(emailAdress);
+
+    }
+
+    public void selectSendEmailButton (AndroidDriver driver){
+        WebElement sendEmailButton = driver.findElementByAccessibilityId("Send Email");
+        sendEmailButton.click();
     }
 
 }

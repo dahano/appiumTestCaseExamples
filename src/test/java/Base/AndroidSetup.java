@@ -6,6 +6,7 @@ import com.thoughtworks.selenium.webdriven.commands.WaitForPageToLoad;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -58,7 +59,6 @@ public class AndroidSetup {
         MainActivity mainActivity = new MainActivity();
         WebElement searchUsedCarButton = driver.findElementByAccessibilityId("Search Used Cars");
         SearchResultsPage searchResultsPage = new SearchResultsPage();
-        WaitForPageToLoad waitForPageToLoad = new WaitForPageToLoad();
 
 
         mainActivity.setZipCode(driver, "90210");
@@ -68,19 +68,24 @@ public class AndroidSetup {
         searchUsedCarButton.click();
 
         searchResultsPage.selectFilterButton(driver);
-        waitForPageToLoad.setTimeToWait(4000);
 
         searchResultsPage.selectColorOption(driver);
         searchResultsPage.chooseColor(driver,"Black");
         searchResultsPage.clickDoneButton(driver);
 
-        waitForPageToLoad.setTimeToWait(4000);
+
         searchResultsPage.selectYearsOption(driver);
+
         searchResultsPage.selectAllYears(driver);
         searchResultsPage.selectYearEndtoEnd(driver);
         searchResultsPage.selectYearEndtoEnd(driver);
         searchResultsPage.selectSearchButton(driver);
         searchResultsPage.selectFirstRowItem(driver);
+        searchResultsPage.selectShareLink(driver);
+        searchResultsPage.selectEmailShareLink(driver);
+        searchResultsPage.sendEmailShareLinkTo(driver,"ofirdahan112@gmail.com");
+        searchResultsPage.selectSendEmailButton(driver);
+
     }
 
 
