@@ -78,8 +78,7 @@ public class SearchResultsPage {
 
     }
 
-    public void selectShareLink(AndroidDriver driver){
-
+    public void selectShareLink(AndroidDriver driver) throws InterruptedException {
         TouchAction touchAction = new TouchAction(driver);
         try{
             touchAction.tap(988,1801).perform();
